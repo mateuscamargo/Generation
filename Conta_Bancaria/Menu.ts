@@ -99,15 +99,51 @@ export function main() {
                 keyPress()
                 break;
             case 3:
-                console.log(colors.fg.yellow, 
-                    "\n\nConsultar dados da Conta - por número\n\n", colors.reset);
-
+                console.log(colors.fg.yellow, "\n\nConsultar dados da Conta - por número\n\n", colors.reset);
+                
+                console.log("Digite o número da conta: ");
+                numero = readlinesync.questionInt("");
+                contas.procurarPorNumero(numero);
                 keyPress()
                 break;
             case 4:
-                console.log(colors.fg.yellow, 
-                    "\n\nAtualizar dados da Conta\n\n", colors.reset);
+                console.log(colors.fg.yellow, "\n\nAtualizar dados da Conta\n\n", colors.reset);
 
+                console.log("Digite o número da conta: ");
+                numero = readlinesync.questionInt("");
+
+                let conta = contas.buscarNoArray(numero);
+
+                if(conta != null){
+
+                    console.log("Digite o número da agência: ")
+                    agencia = readlinesync.questionInt("");
+
+                    console.log("Digite o nome do titular da conta: ")
+                    titular = readlinesync.question("");
+
+                    tipo = conta.tipo;
+
+                    console.log("Digite o saldo da conta (R$): ")
+                    saldo = readlinesync.questionFloat("");
+
+                    switch(tipo){
+                        case 1:
+                        console.log("Digite o limite da conta (R$): ");
+                        limite = readlinesync.questionFloat("");
+                        contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite))
+                        break;
+
+                    case 2:
+                        console.log("Digite o dia do aniverário da conta poupança: ");
+                        aniversario = readlinesync.questionInt("");
+                        contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+                        break;
+                    }
+                } else {
+                    console.log(colors.fg.red, "\nA conta numero: " + numero + " não foi encontrada!", colors.reset);
+                }
+                
                 keyPress()
                 break;
             case 5:
